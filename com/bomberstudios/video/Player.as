@@ -186,6 +186,7 @@ class com.bomberstudios.video.Player {
   // Run loop
   private function start_run_loop(){
     run_loop_id = setInterval(Delegate.create(this,on_run_loop),RUN_LOOP_SLEEP);
+    redraw();
   }
   private function on_run_loop(){
 
@@ -296,10 +297,8 @@ class com.bomberstudios.video.Player {
     show_play_button();
 
     // Fullscreen button
-    if (fullscreen_available) {
-      mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
-      make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
-    }
+    mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
+    make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
 
     // Sound button
     mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:BUTTON_MARGIN});
@@ -319,7 +318,11 @@ class com.bomberstudios.video.Player {
     } else {
       set_width(Stage.width);
     }
+    // Fullscreen button
+    mc.transport.ico_fullscreen._visible = fullscreen_available;
+
     position_watermark();
+    center_on_stage(mc.placeholder);
     center_on_stage(video_mc);
   }
   private function redraw_transport(){
