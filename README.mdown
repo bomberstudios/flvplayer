@@ -1,0 +1,54 @@
+
+flvplayer
+=========
+
+This is the README for the flvplayer project.
+
+Compilation
+-----------
+flvplayer has been created using fluby, so compilation is pretty straightforward:
+
+    $ cd flvplayer
+    $ rake
+
+There are some additional rake tasks available:
+
+rake clobber_package  # Remove package products
+rake package          # Build all the packages
+rake release          # Build a release version of flvplayer (with trace() disabled)
+rake repackage        # Force a rebuild of the package files
+rake test             # Test the SWF file in your default browser
+
+
+
+Assets
+------
+When compiling, fluby imports all assets in the 'assets' directory.
+
+PNG files are imported as MovieClips, with their name (minus extension) as an ID. Thus, if you have a 'background.png' file, you can use it on your code with:
+
+    var my_clip = attachMovie("background","my_clip_name",1);
+
+TTF fonts are also imported. If you need to use multiple weights of the same family (i.e: regular, bold, italics...) you should name your fonts like this:
+
+    family_name-font_weight.ttf
+
+So, if you were to use Arial, you'd use:
+
+    arial-regular.ttf
+    arial-bold.ttf
+    arial-italic.ttf
+    arial-bold_italic.ttf
+
+Then, in your code, you'd use the fonts like this:
+
+    createTextField("txtest",1,0,0,200,30);
+    txtest.embedFonts = true;
+    var tf = new TextFormat();
+    tf.font = "arial";
+    tf.italic = true;
+    txtest.setNewTextFormat(tf);
+    txtest.text = "This is italics";
+
+--- 
+Created: 20090527

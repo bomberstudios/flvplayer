@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "fluby"
+
+commandline = ARGV
+if commandline.size < 2
+  puts "Usage: script/generate type classpath [options]"
+  puts "where type is one of"
+  Fluby.available_templates.each do |t|
+    puts "\t#{t}"
+  end
+else
+  type = commandline.shift
+  name = commandline.shift
+  options = commandline
+  Fluby.generate(type,name,options)
+end
