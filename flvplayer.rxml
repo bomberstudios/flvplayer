@@ -9,14 +9,12 @@
 <% Dir["assets/*.ttf"].each do |file| %>
       <font id="<%= File.basename(file,'.ttf') %>" import="<%= file %>"  name="<%= File.basename(file,'.ttf').split('-')[0] %>" glyphs="abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ01234567890,.-_¡!áéíóúÁÉÍÓÚüÜ\/• :;()¿?&lt;&gt;" />
 <% end %>
-      <!--
       <clip id="VideoDisplay">
         <frame>
           <video id="vid" width="240" height="180" smoothing="3" />
           <place id="vid" name="vid" />
         </frame>
       </clip>
-      -->
     </library>
   </frame>
 </movie>
