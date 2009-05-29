@@ -68,9 +68,18 @@ class com.bomberstudios.video.Player {
     } else {
       ns.pause(false);
     }
+    mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
+    make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
   }
   function pause(){
-    is_paused = true;
+    if(is_paused){
+      mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
+      make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
+    } else {
+      mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
+      make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
+    }
+    is_paused = !is_paused;
     ns.pause();
   }
   function toggle_play(){
@@ -96,8 +105,12 @@ class com.bomberstudios.video.Player {
   function on_click_audio(){}
   function on_click_fullscreen(){}
   function on_click_btn(btn:MovieClip){ btn._alpha = 10; }
-  function on_rollover_btn(btn:MovieClip){ btn._alpha = 70; }
-  function on_rollout_btn(btn:MovieClip){ btn._alpha = 100; }
+  function on_rollover_btn(btn:MovieClip){
+    btn.attachMovie(btn._name + "_over",btn._name,1);
+  }
+  function on_rollout_btn(btn:MovieClip){
+    btn.attachMovie(btn._name,btn._name,1);
+  }
   function on_video_status(s:Object){}
   function on_video_metadata(s:Object){
     // set aspect ratio
@@ -164,8 +177,9 @@ class com.bomberstudios.video.Player {
     mc.transport.bg_center._width = video_mc._width - mc.transport.bg_left._width - mc.transport.bg_right._width;
     mc.transport.bg_right._x = video_mc._width - mc.transport.bg_right._width;
     mc.transport.ico_sound._x = video_mc._width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
+    mc.transport.ico_sound_muted._x = video_mc._width - mc.transport.ico_sound_muted._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
     mc.transport.ico_fullscreen._x = video_mc._width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
-    mc.transport.ico_sound._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
+    mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
     mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
     mc.transport.progress_bar_load._x = mc.transport.progress_bar_position._x = mc.transport.progress_bar_bg._x + 1;
     mc.transport._y = video_mc._height - mc.transport._height;
@@ -203,8 +217,8 @@ class com.bomberstudios.video.Player {
   // Audio
   function mute(){
     audio_muted = true;
-    mc.transport.attachMovie('ico_sound_muted','ico_sound',LEVEL_ICO_SOUND);
-    make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
+    mc.transport.attachMovie('ico_sound_muted','ico_sound_muted',LEVEL_ICO_SOUND);
+    make_button(mc.transport.ico_sound_muted,Delegate.create(this,toggle_audio));
     audio.setVolume(0);
   }
   function unmute(){
