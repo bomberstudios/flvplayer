@@ -25,6 +25,7 @@ class com.bomberstudios.video.Player {
   var LEVEL_TRANSPORT_BG_LEFT:Number      = 100;
   var LEVEL_TRANSPORT_BG_CENTER:Number    = 200;
   var LEVEL_TRANSPORT_BG_RIGHT:Number     = 300;
+  var LEVEL_SOUND:Number                = 300;
   var LEVEL_BTN_PLAY:Number             = 400;
   var LEVEL_ICO_SOUND:Number            = 500;
   var LEVEL_ICO_FULLSCREEN:Number       = 600;
@@ -152,7 +153,7 @@ class com.bomberstudios.video.Player {
     ns.setBufferTime(5);
 
     // create and set sound object
-    var snd = mc.createEmptyMovieClip("snd", 300);
+    var snd = mc.createEmptyMovieClip("snd", LEVEL_SOUND);
     snd.attachAudio(ns);
     audio = new Sound(snd);
 
