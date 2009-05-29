@@ -11,12 +11,16 @@ class com.bomberstudios.video.Player {
   var is_paused:Boolean = false;
   var audio_muted:Boolean;
   var started:Boolean;
+  var run_loop_id:Number;
 
   private var videoPath:String;
 
   // Video Metadata
   var metadata:Object;
   var aspect_ratio:Number = 4/3;
+
+  // Some constants for UI redrawing
+  var BUTTON_MARGIN = 3;
 
   // Levels for movieclips
   var LEVEL_PLACEHOLDER:Number          = 50;
@@ -29,6 +33,10 @@ class com.bomberstudios.video.Player {
   var LEVEL_BTN_PLAY:Number             = 400;
   var LEVEL_ICO_SOUND:Number            = 500;
   var LEVEL_ICO_FULLSCREEN:Number       = 600;
+  var LEVEL_PROGRESS_BG:Number          = 700;
+  var LEVEL_PROGRESS_LOAD:Number        = 800;
+  var LEVEL_PROGRESS_POSITION:Number    = 900;
+  
 
   function Player(_mc:MovieClip){
     Stage.scaleMode = "noScale";
@@ -36,6 +44,7 @@ class com.bomberstudios.video.Player {
     mc = _mc.createEmptyMovieClip('v',_mc.getNextHighestDepth());
     create_ui();
     setup_video();
+    start_run_loop();
   }
   function toString(){
     return "FLVPlayer v1.0";
@@ -70,6 +79,16 @@ class com.bomberstudios.video.Player {
     } else {
       play();
     }
+  }
+
+  // Progress bar
+  private function start_run_loop(){
+    run_loop_id = setInterval(Delegate.create(this,on_run_loop),10);
+  }
+  private function on_run_loop(){
+    //trace(this);
+    mc.transport.progress_bar_position._width = ((ns.time / metadata.duration) * mc.transport.progress_bar_bg._width) - 2;
+    mc.transport.progress_bar_load._width = ((ns.bytesLoaded / ns.bytesTotal) * mc.transport.progress_bar_bg._width) - 2;
   }
 
   // Events
@@ -108,17 +127,26 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('bg_center','bg_center',LEVEL_TRANSPORT_BG_CENTER,{_x:mc.transport.bg_left._width});
     mc.transport.attachMovie('bg_right','bg_right',LEVEL_TRANSPORT_BG_RIGHT,{_x:mc.transport.bg_center._x + mc.transport.bg_center._width});
 
+
     // Play button
-    mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:2, _y:2});
+    mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
     make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
 
-    // Sound button
-    mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:2});
-    make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
 
     // Fullscreen button
-    mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:2});
+    mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
     make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
+
+    // Sound button
+    mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:BUTTON_MARGIN});
+    make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
+
+
+    // Progress bar
+    var progress_bar_position = mc.transport.btn_play._x + mc.transport.btn_play._width + ( BUTTON_MARGIN * 2 );
+    mc.transport.attachMovie('progress_bar_bg','progress_bar_bg',LEVEL_PROGRESS_BG,{_x:progress_bar_position});
+    mc.transport.attachMovie('progress_bar_load','progress_bar_load',LEVEL_PROGRESS_LOAD,{_x:progress_bar_position,_width: 0});
+    mc.transport.attachMovie('progress_bar_position','progress_bar_position',LEVEL_PROGRESS_POSITION,{_x:progress_bar_position,_width:0});
 
     // Placeholder
     mc.attachMovie('placeholder','placeholder',LEVEL_PLACEHOLDER);
@@ -135,8 +163,11 @@ class com.bomberstudios.video.Player {
   private function redraw_transport(){
     mc.transport.bg_center._width = video_mc._width - mc.transport.bg_left._width - mc.transport.bg_right._width;
     mc.transport.bg_right._x = video_mc._width - mc.transport.bg_right._width;
-    mc.transport.ico_sound._x = video_mc._width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - 4;
-    mc.transport.ico_fullscreen._x = video_mc._width - mc.transport.ico_fullscreen._width - 2;
+    mc.transport.ico_sound._x = video_mc._width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
+    mc.transport.ico_fullscreen._x = video_mc._width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
+    mc.transport.ico_sound._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
+    mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
+    mc.transport.progress_bar_load._x = mc.transport.progress_bar_position._x = mc.transport.progress_bar_bg._x + 1;
     mc.transport._y = video_mc._height - mc.transport._height;
   }
   private function toggle_fullscreen(){}
@@ -172,13 +203,13 @@ class com.bomberstudios.video.Player {
   // Audio
   function mute(){
     audio_muted = true;
-    mc.transport.attachMovie('ico_sound_muted','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:2});
+    mc.transport.attachMovie('ico_sound_muted','ico_sound',LEVEL_ICO_SOUND);
     make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
     audio.setVolume(0);
   }
   function unmute(){
     audio_muted = false;
-    mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:2});
+    mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND);
     make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
     audio.setVolume(100);
   }
@@ -188,5 +219,6 @@ class com.bomberstudios.video.Player {
     } else {
       mute();
     }
+    redraw_transport();
   }
 }
