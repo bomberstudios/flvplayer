@@ -5,9 +5,41 @@ flvplayer is a FLV player, built in ActionScript.
 
 The main goals of the project are:
 
-- have a simple codebase that can be used on a more complex project
+- have a functional player with a proper open source license (MIT)
 - being able to compile the player using only Open Source tools ([MTASC](http://www.mtasc.org/), [swfmill](http://swfmill.org/), Ruby)
+- have a simple codebase that can be used on a more complex project
 
+
+## Usage
+
+### Embedding
+
+    <script type="text/javascript" src="/swfobject.js"></script>
+    <div id="flashcontent">
+      This text is replaced by the Flash movie.
+    </div>
+    <script type="text/javascript">
+      var so = new SWFObject("flvplayer.swf", "flvplayer", "640", "360", "8", "#000000");
+      so.addParam('allowFullScreen',true); // this is needed if you want fullscreen video playing
+      so.addVariable('aspect_ratio',16/9);
+      so.addVariable('placeholder','placeholder.jpg');
+      so.addVariable('video_path','video.flv');
+      so.write("flashcontent");
+    </script>
+
+
+You can use the following variables in your HTML:
+
+    placeholder  - URL to the image you want to display as a placeholder. It is
+                   displayed before the video plays, and after it ends.
+    
+    video_path   - URL to the FLV video you want to play.
+    
+    autoplay     - Boolean. If 'true', the video will play when the SWF is loaded.
+    
+    aspect_ratio - Default aspect ratio to be used for your movie. By default
+                   it's 16/9, but if the FLV contains width and height metadata
+                   it will be used for auto aspect_ratio calculation.
 
 Compilation
 -----------
@@ -32,3 +64,27 @@ All images used in the player are available inside the 'assets' folder, in Firew
 
 If you want to change the look & feel of your player, just edit the PNG files and recompile.
 
+
+LICENSE
+-------
+flvplayer is released under the MIT License. Feel free to use the software as you please, but it would be nice if you shared your improvements even if it's not required :)
+
+Copyright (c) 2009 Ale Muñoz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
