@@ -10,15 +10,20 @@ class com.bomberstudios.video.Player {
 
   var is_playing:Boolean = false;
   var is_paused:Boolean = false;
+  var is_streaming:Boolean = false;
   var audio_muted:Boolean;
   var started:Boolean;
   var run_loop_id:Number;
 
-  private var videoPath:String;
+  // Idle detection
+  private var ui_idle_count:Number = 0;
+  private var ui_idle_xmouse:Number;
+  private var ui_idle_ymouse:Number;
 
   // Video Metadata
   var metadata:Object;
   var aspect_ratio:Number = 4/3;
+  private var videoPath:String;
 
   // Some constants for UI redrawing
   var BUTTON_MARGIN = 3;
@@ -91,14 +96,29 @@ class com.bomberstudios.video.Player {
     }
   }
 
-  // Progress bar
+  // Run loop
   private function start_run_loop(){
     run_loop_id = setInterval(Delegate.create(this,on_run_loop),10);
   }
   private function on_run_loop(){
-    //trace(this);
+
+    // Update progress bar
     mc.transport.progress_bar_position._width = ((ns.time / metadata.duration) * mc.transport.progress_bar_bg._width) - 2;
     mc.transport.progress_bar_load._width = ((ns.bytesLoaded / ns.bytesTotal) * mc.transport.progress_bar_bg._width) - 2;
+
+    // Hide / show transport bar
+    if (ui_idle_xmouse != mc._xmouse || ui_idle_ymouse != mc._ymouse) {
+      ui_idle_count = 0;
+    } else {
+      ui_idle_count += 1;
+    }
+    if (ui_idle_count > 100) {
+      hide_transport();
+    } else {
+      show_transport();
+    }
+    ui_idle_xmouse = mc._xmouse;
+    ui_idle_ymouse = mc._ymouse;
   }
 
   // Events
