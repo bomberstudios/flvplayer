@@ -1,6 +1,6 @@
-
 require 'rubygems'
 require 'sinatra'
+require 'rdiscount'
 
 configure do
   WIDTH = 640
@@ -22,8 +22,13 @@ helpers do
       var so = new SWFObject("/swf", "mymovie", "#{WIDTH}", "#{HEIGHT}", "8", "#{BGCOLOR}");
       so.addParam('allowFullScreen',true);
       so.addVariable('aspect_ratio',16/9);
+      so.addVariable('placeholder','/placeholder');
+      so.addVariable('video_path','/video');
       so.write("flashcontent");
     </script>
+    <p>
+      #{RDiscount.new(File.read('README.mdown')).to_html}
+    </p>
     HTML
   end
 end
@@ -40,9 +45,11 @@ get "/swf" do
   send_file "deploy/#{APP}.swf", :type => 'application/x-shockwave-flash', :disposition => 'inline'
 end
 get '/placeholder' do
-  send_file "assets/placeholder_small.jpg", :disposition => 'inline'
+  send_file "assets/placeholder.png", :disposition => 'inline'
 end
-
+get '/video' do
+  send_file "deploy/test_video.flv", :disposition => 'inline'
+end
 get '/swfobject' do
   send_file "deploy/swfobject.js", :disposition => 'inline'
 end
