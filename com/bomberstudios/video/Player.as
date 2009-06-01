@@ -1,4 +1,5 @@
 import com.bomberstudios.utils.Delegate;
+import flash.geom.Rectangle; // needed for fullscreen hardware scaling
 
 class com.bomberstudios.video.Player {
   var audio:Sound;
@@ -121,18 +122,28 @@ class com.bomberstudios.video.Player {
     }
     redraw();
   }
+  function onResize(e){
+    redraw();
+  }
 
   // UI
   function set_width(w:Number){
-    mc.placeholder._width = video_mc._width = w;
-    mc.placeholder._height = video_mc._height = w / aspect_ratio;
+    video_mc._width = w;
+    video_mc._height = w / aspect_ratio;
     redraw_transport();
   }
-
+  function hide_transport(){
+    mc.transport._visible = false;
+  }
+  function show_transport(){
+    mc.transport._visible = true;
+  }
   private function create_ui(){
     // Video display
     mc.attachMovie('VideoDisplay','VideoDisplay',LEVEL_VIDEODISPLAY);
     video_mc = mc.VideoDisplay.vid;
+    video_mc._width  = Stage.width;
+    video_mc._height = Stage.height;
 
     // Transport bar
     mc.createEmptyMovieClip('transport',LEVEL_TRANSPORT);
@@ -171,6 +182,7 @@ class com.bomberstudios.video.Player {
     } else {
       set_width(Stage.width);
     }
+    video_mc._y = Stage.height / 2 - video_mc._height/2;
     redraw_transport();
   }
   private function redraw_transport(){
@@ -182,10 +194,13 @@ class com.bomberstudios.video.Player {
     mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
     mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
     mc.transport.progress_bar_load._x = mc.transport.progress_bar_position._x = mc.transport.progress_bar_bg._x + 1;
-    mc.transport._y = video_mc._height - mc.transport._height;
+    mc.transport._y = video_mc._y + video_mc._height - mc.transport._height;
   }
-  private function toggle_fullscreen(){}
-
+  function toggle_fullscreen(){
+    Stage.fullScreenSourceRect = new Rectangle(0,0,Stage.width,Stage.height);
+    Stage.addListener(this);
+    Stage.displayState == 'fullScreen' ? Stage.displayState = 'normal' : Stage.displayState = 'fullScreen';
+  }
   private function make_button(btn:MovieClip,action:Function){
     btn.onRelease = action;
     btn.onRollOver = Delegate.create(this,on_rollover_btn,btn);
