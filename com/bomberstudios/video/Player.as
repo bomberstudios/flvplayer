@@ -25,6 +25,7 @@ class com.bomberstudios.video.Player {
   var aspect_ratio:Number = 4/3;
   private var videoPath:String;
   var placeholder_path:String;
+  var cue_markers:Array;
 
   // Some constants for UI redrawing
   var BUTTON_MARGIN = 3;
@@ -43,12 +44,14 @@ class com.bomberstudios.video.Player {
   var LEVEL_PROGRESS_BG:Number          = 700;
   var LEVEL_PROGRESS_LOAD:Number        = 800;
   var LEVEL_PROGRESS_POSITION:Number    = 900;
+  var LEVEL_CUE_MARKERS:Number          = 9000;
   
 
   function Player(_mc:MovieClip){
     Stage.scaleMode = "noScale";
     Stage.align = "TL";
     mc = _mc.createEmptyMovieClip('v',_mc.getNextHighestDepth());
+    cue_markers = [];
     create_ui();
     setup_video();
     start_run_loop();
@@ -97,6 +100,9 @@ class com.bomberstudios.video.Player {
       play();
     }
   }
+  function seek_to(pos:Number){
+    ns.seek(pos);
+  }
 
   // Run loop
   private function start_run_loop(){
@@ -104,9 +110,7 @@ class com.bomberstudios.video.Player {
   }
   private function on_run_loop(){
 
-    // Update progress bar
-    mc.transport.progress_bar_position._width = ((ns.time / metadata.duration) * mc.transport.progress_bar_bg._width) - 2;
-    mc.transport.progress_bar_load._width = ((ns.bytesLoaded / ns.bytesTotal) * mc.transport.progress_bar_bg._width) - 2;
+    update_progress_bar();
 
     // Hide / show transport bar
     if (ui_idle_xmouse != mc._xmouse || ui_idle_ymouse != mc._ymouse) {
@@ -147,9 +151,19 @@ class com.bomberstudios.video.Player {
     aspect_ratio = s.width / s.height;
     metadata = s;
     for(var key in metadata){
-      trace(key + ": " + metadata[key] );
+      if (key == "cuePoints") {
+        on_cue_markers(s[key]);
+      }
     }
     redraw();
+  }
+  function on_cue_markers(markers_array){
+    for(var key in markers_array){
+      cue_markers.push({id: key, name: markers_array[key].name, time: markers_array[key].time});
+    }
+  }
+  function on_cue_marker_rollover(txt:String){
+    trace(txt);
   }
   function onResize(e){
     redraw();
@@ -225,6 +239,12 @@ class com.bomberstudios.video.Player {
     mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
     mc.transport.progress_bar_load._x = mc.transport.progress_bar_position._x = mc.transport.progress_bar_bg._x + 1;
     mc.transport._y = video_mc._y + video_mc._height - mc.transport._height;
+    mc.transport._x = video_mc._x;
+    update_cue_markers();
+  }
+  private function update_progress_bar(){
+    mc.transport.progress_bar_position._width = ((ns.time / metadata.duration) * mc.transport.progress_bar_bg._width) - 2;
+    mc.transport.progress_bar_load._width = ((ns.bytesLoaded / ns.bytesTotal) * mc.transport.progress_bar_bg._width) - 2;
   }
   function toggle_fullscreen(){
     Stage.fullScreenSourceRect = new Rectangle(0,0,Stage.width,Stage.height);
@@ -303,5 +323,23 @@ class com.bomberstudios.video.Player {
     mc.placeholder.img._x = Math.floor(video_mc._width / 2 - mc.placeholder.img._width / 2)
     mc.placeholder.img._y = Math.floor(video_mc._height / 2 - mc.placeholder.img._height / 2)
     mc.placeholder._visible = true;
+  }
+
+  // Video Markers
+  function update_cue_markers(){
+    for (var i=0 ; i < cue_markers.length; i++){
+      var current_cue = cue_markers[i];
+      add_marker(current_cue.id,current_cue.name,current_cue.time);
+    }
+  }
+  function add_marker(id,name,time){
+    var marker = mc.transport.attachMovie('cue_marker','cue_marker_'+id,LEVEL_CUE_MARKERS + id,{_x: time_to_position(time)});
+    marker.onRelease = Delegate.create(this,seek_to,time);
+    marker.onRollOver = Delegate.create(this,on_cue_marker_rollover,name);
+  }
+  private function time_to_position(pos:Number){
+    var left = mc.transport.progress_bar_bg._x;
+    var max_width = mc.transport.progress_bar_bg._width;
+    return Math.floor((pos / metadata.duration) * max_width + left - 3);
   }
 }
