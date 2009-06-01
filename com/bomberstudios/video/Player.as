@@ -212,6 +212,7 @@ class com.bomberstudios.video.Player {
       set_width(Stage.width);
     }
     video_mc._y = Stage.height / 2 - video_mc._height/2;
+    video_mc._x = Stage.width / 2 - video_mc._width/2;
     redraw_transport();
   }
   private function redraw_transport(){
