@@ -22,10 +22,12 @@ class com.bomberstudios.video.Player {
 
   // Video Metadata
   var metadata:Object;
-  var aspect_ratio:Number = 4/3;
-  private var videoPath:String;
-  var placeholder_path:String;
   var cue_markers:Array;
+
+  // HTML Variables
+  var aspect_ratio:Number = 4/3;
+  var $video_path:String;
+  var $placeholder_path:String;
 
   // Some constants for UI redrawing
   var BUTTON_MARGIN = 3;
@@ -62,11 +64,14 @@ class com.bomberstudios.video.Player {
 
   // Video Data
   public function get video_path():String {
-    return videoPath;
+    return $video_path;
   }
   public function set video_path(s:String) {
-    trace("setting video path to " + s);
-    videoPath = s;
+    $video_path = s;
+  }
+  public function set placeholder_path(s:String){
+    $placeholder_path = s;
+    load_placeholder($placeholder_path);
   }
 
   // Transport
@@ -215,8 +220,6 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('progress_bar_load','progress_bar_load',LEVEL_PROGRESS_LOAD,{_x:progress_bar_position,_width: 0});
     mc.transport.attachMovie('progress_bar_position','progress_bar_position',LEVEL_PROGRESS_POSITION,{_x:progress_bar_position,_width:0});
 
-    // Placeholder
-    load_placeholder('/placeholder');
   }
   private function redraw(){
     var tentative_video_height = Stage.width / aspect_ratio;
