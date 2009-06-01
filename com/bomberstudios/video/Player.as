@@ -24,13 +24,14 @@ class com.bomberstudios.video.Player {
   var metadata:Object;
   var aspect_ratio:Number = 4/3;
   private var videoPath:String;
+  var placeholder_path:String;
 
   // Some constants for UI redrawing
   var BUTTON_MARGIN = 3;
 
   // Levels for movieclips
-  var LEVEL_PLACEHOLDER:Number          = 50;
   var LEVEL_VIDEODISPLAY:Number         = 100;
+  var LEVEL_PLACEHOLDER:Number          = 150;
   var LEVEL_TRANSPORT:Number            = 200;
   var LEVEL_TRANSPORT_BG_LEFT:Number      = 100;
   var LEVEL_TRANSPORT_BG_CENTER:Number    = 200;
@@ -76,6 +77,7 @@ class com.bomberstudios.video.Player {
     }
     mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
     make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
+    hide_placeholder();
   }
   function pause(){
     if(is_paused){
@@ -132,7 +134,14 @@ class com.bomberstudios.video.Player {
   function on_rollout_btn(btn:MovieClip){
     btn.attachMovie(btn._name,btn._name,1);
   }
-  function on_video_status(s:Object){}
+  function on_video_status(s:Object){
+    for(var key in s){
+      trace(key + ": " + s[key]);
+    }
+    if (s.code == "NetStream.Play.Stop") {
+      on_video_end();
+    }
+  }
   function on_video_metadata(s:Object){
     // set aspect ratio
     aspect_ratio = s.width / s.height;
@@ -144,6 +153,9 @@ class com.bomberstudios.video.Player {
   }
   function onResize(e){
     redraw();
+  }
+  function on_video_end(){
+    show_placeholder();
   }
 
   // UI
@@ -171,11 +183,9 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('bg_center','bg_center',LEVEL_TRANSPORT_BG_CENTER,{_x:mc.transport.bg_left._width});
     mc.transport.attachMovie('bg_right','bg_right',LEVEL_TRANSPORT_BG_RIGHT,{_x:mc.transport.bg_center._x + mc.transport.bg_center._width});
 
-
     // Play button
     mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
     make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
-
 
     // Fullscreen button
     mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
@@ -185,7 +195,6 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:BUTTON_MARGIN});
     make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
 
-
     // Progress bar
     var progress_bar_position = mc.transport.btn_play._x + mc.transport.btn_play._width + ( BUTTON_MARGIN * 2 );
     mc.transport.attachMovie('progress_bar_bg','progress_bar_bg',LEVEL_PROGRESS_BG,{_x:progress_bar_position});
@@ -193,7 +202,7 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('progress_bar_position','progress_bar_position',LEVEL_PROGRESS_POSITION,{_x:progress_bar_position,_width:0});
 
     // Placeholder
-    mc.attachMovie('placeholder','placeholder',LEVEL_PLACEHOLDER);
+    load_placeholder('/placeholder');
   }
   private function redraw(){
     var tentative_video_height = Stage.width / aspect_ratio;
@@ -269,5 +278,29 @@ class com.bomberstudios.video.Player {
       mute();
     }
     redraw_transport();
+  }
+
+  // Placeholder image
+  function load_placeholder(uri:String){
+    mc.createEmptyMovieClip('placeholder',LEVEL_PLACEHOLDER);
+    mc.placeholder.createEmptyMovieClip('bg',100);
+    mc.placeholder.createEmptyMovieClip('img',200);
+    mc.placeholder.bg.beginFill(0x000000,100);
+    mc.placeholder.bg.lineTo(video_mc._width,0);
+    mc.placeholder.bg.lineTo(video_mc._width,video_mc._height);
+    mc.placeholder.bg.lineTo(0,video_mc._height);
+    mc.placeholder.bg.lineTo(0,0);
+    mc.placeholder.bg.endFill();
+    var loader:MovieClipLoader = new MovieClipLoader();
+    loader.onLoadInit = Delegate.create(this,show_placeholder);
+    loader.loadClip(uri,mc.placeholder.img);
+  }
+  function hide_placeholder(){
+    mc.placeholder._visible = false;
+  }
+  function show_placeholder(){
+    mc.placeholder.img._x = Math.floor(video_mc._width / 2 - mc.placeholder.img._width / 2)
+    mc.placeholder.img._y = Math.floor(video_mc._height / 2 - mc.placeholder.img._height / 2)
+    mc.placeholder._visible = true;
   }
 }
