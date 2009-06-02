@@ -24,6 +24,7 @@ def render_template(file)
 end
 
 task :assets do
+  mkdir_p 'deploy'
   Dir.glob(['assets/*.js','assets/*.xml']).each do |file|
     cp file, "deploy/#{File.basename(file)}", :verbose => true
   end
