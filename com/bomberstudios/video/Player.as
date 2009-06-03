@@ -50,7 +50,8 @@ class com.bomberstudios.video.Player {
   var LEVEL_PROGRESS_LOAD:Number        = 800;
   var LEVEL_PROGRESS_POSITION:Number    = 900;
   var LEVEL_CUE_MARKERS:Number          = 9000;
-  
+  var LEVEL_MESSAGE:Number              = 10000;
+
 
   function Player(_mc:MovieClip){
     Stage.scaleMode = "noScale";
@@ -315,6 +316,14 @@ class com.bomberstudios.video.Player {
   private function show_play_button(){
     mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
     make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
+  }
+  function display_message(txt:String){
+    mc.createEmptyMovieClip('msg',LEVEL_MESSAGE);
+    mc.msg.createTextField('msg_txt',1,Stage.width/2,Stage.height/2,200,50);
+    mc.msg.msg_txt.text = txt;
+  }
+  function hide_message(){
+    mc.msg.removeMovieClip();
   }
 
   // Audio
