@@ -106,5 +106,5 @@ end
 
 
 desc "Build a release version of flvplayer (with trace() disabled)"
-task :release => [:nodebug,:compile,:pack,:notify]
+task :release => [:nodebug,:compile]
 task :default => [:compile]
