@@ -30,16 +30,33 @@ The main goals of the project are:
 
 You can use the following variables in your HTML:
 
-    placeholder  - URL to the image you want to display as a placeholder. It is
-                   displayed before the video plays, and after it ends.
+    placeholder  - URL to the image you want to display as a placeholder.
+                   It is displayed before the video plays, and after it ends.
     
     video_path   - URL to the FLV video you want to play.
     
-    autoplay     - Boolean. If 'true', the video will play when the SWF is loaded.
+    autoplay     - Boolean. If 'true', the video will play when the SWF
+                   is loaded.
     
-    aspect_ratio - Default aspect ratio to be used for your movie. By default
-                   it's 16/9, but if the FLV contains width and height metadata
-                   it will be used for auto aspect_ratio calculation.
+    aspect_ratio - Default aspect ratio to be used for your movie.
+                   By default it's 16/9, but if the FLV contains width
+                   and height metadata it will be used for auto aspect_ratio
+                   calculation.
+
+
+## FLV Streaming
+
+The player supports FLV pseudostreaming. Take a look at the sample sinatra
+app, based on http://github.com/hubertlepicki/sinatra-flv-streaming-example
+
+To use pseudostreaming in your FLV files, they *need* to contain some
+metadata. You can embed this metadata by using flvtool2:
+
+    $ sudo gem install flvtool2
+    $ flvtool2 -U your_video_file.flv
+
+**NOTE:** Don't even think of running the sinatra app in a production environment. Take a look at [this article in flowplayer.org](http://flowplayer.org/plugins/streaming/pseudostreaming.html) and use a *real* webserver.
+
 
 Compilation
 -----------
@@ -67,7 +84,9 @@ If you want to change the look & feel of your player, just edit the PNG files an
 
 LICENSE
 -------
-flvplayer is released under the MIT License. Feel free to use the software as you please, but it would be nice if you shared your improvements even if it's not required :)
+flvplayer is released under the MIT License. Feel free to use the software
+as you please, but it would be nice if you shared your improvements even
+if it's not required :)
 
 Copyright (c) 2009 Ale Muñoz
 
