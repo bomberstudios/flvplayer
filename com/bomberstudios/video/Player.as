@@ -247,6 +247,7 @@ class com.bomberstudios.video.Player {
     update_cue_markers();
   }
   private function update_progress_bar(){
+    mc.transport.progress_bar_position._width = 0;
     mc.transport.progress_bar_position._width = ((ns.time / metadata.duration) * mc.transport.progress_bar_bg._width) - 2;
     mc.transport.progress_bar_load._width = ((ns.bytesLoaded / ns.bytesTotal) * mc.transport.progress_bar_bg._width) - 2;
   }
