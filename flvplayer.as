@@ -12,6 +12,9 @@ class flvplayer {
     _video.set_width(Stage.width);
     _video.video_path = _timeline.video_path;
     _video.placeholder_path = _timeline.placeholder;
+    if (_timeline.autoplay != undefined) {
+      _video.toggle_play();
+    }
   }
   static function main(tl:MovieClip){
     var app:flvplayer = new flvplayer(tl);
