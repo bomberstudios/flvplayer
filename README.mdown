@@ -56,6 +56,7 @@ metadata. You can embed this metadata by using flvtool2:
     $ flvtool2 -U your_video_file.flv
 
 **NOTE:** Don't even think of running the sinatra app in a production environment. Use a *real* webserver and take a look at these articles:
+
 - [Lighttpd](http://blog.lighttpd.net/articles/2006/03/09/flv-streaming-with-lighttpd)
 - [Apache](http://tperspective.blogspot.com/2009/02/apache-flv-streaming-done-right.html)
 - [Anything PHP-enabled](http://richbellamy.com/wiki/Flash_Streaming_to_FlowPlayer_using_only_PHP)
