@@ -133,10 +133,6 @@ class com.bomberstudios.video.Player {
   }
 
   // Events
-  function on_click_play(){}
-  function on_click_audio(){}
-  function on_click_fullscreen(){}
-  function on_click_btn(btn:MovieClip){ btn._alpha = 10; }
   function on_rollover_btn(btn:MovieClip){
     btn.attachMovie(btn._name + "_over",btn._name,1);
   }
