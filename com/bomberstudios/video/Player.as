@@ -33,6 +33,7 @@ class com.bomberstudios.video.Player {
 
   // Some constants for UI redrawing
   var BUTTON_MARGIN = 3;
+  var RUN_LOOP_SLEEP:Number = 25;
 
   // Levels for movieclips
   var LEVEL_VIDEODISPLAY:Number         = 100;
@@ -153,7 +154,7 @@ class com.bomberstudios.video.Player {
 
   // Run loop
   private function start_run_loop(){
-    run_loop_id = setInterval(Delegate.create(this,on_run_loop),10);
+    run_loop_id = setInterval(Delegate.create(this,on_run_loop),RUN_LOOP_SLEEP);
   }
   private function on_run_loop(){
 
