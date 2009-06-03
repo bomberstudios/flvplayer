@@ -186,11 +186,14 @@ class com.bomberstudios.video.Player {
     btn.attachMovie(btn._name,btn._name,1);
   }
   function on_video_status(s:Object){
-    for(var key in s){
-      trace(key + ": " + s[key]);
-    }
-    if (s.code == "NetStream.Play.Stop") {
-      on_video_end();
+    //trace(s.code);
+    switch (s.code) {
+      case "NetStream.Buffer.Full":
+        hide_message();
+        break;
+      case "NetStream.Play.Stop":
+        on_video_end();
+        break;
     }
   }
   function on_video_metadata(s:Object){
@@ -216,8 +219,8 @@ class com.bomberstudios.video.Player {
     redraw();
   }
   function on_video_end(){
-    seek_to(0);
-    pause();
+    ns.close();
+    is_playing = false;
     show_placeholder();
     show_play_button();
   }
