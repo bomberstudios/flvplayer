@@ -285,7 +285,11 @@ class com.bomberstudios.video.Player {
     mc.transport.ico_sound_muted._x = video_mc._width - mc.transport.ico_sound_muted._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
     mc.transport.ico_fullscreen._x = video_mc._width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
     mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
-    mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
+    if (mc.transport.ico_sound) {
+      mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
+    } else {
+      mc.transport.progress_bar_bg._width = mc.transport.ico_sound_muted._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
+    }
     mc.transport.progress_bar_load._x = mc.transport.progress_bar_position._x = mc.transport.progress_bar_bg._x + 1;
     mc.transport._y = video_mc._y + video_mc._height - mc.transport._height;
     mc.transport._x = video_mc._x;
