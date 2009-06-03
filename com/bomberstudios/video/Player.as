@@ -15,6 +15,8 @@ class com.bomberstudios.video.Player {
   var started:Boolean;
   var run_loop_id:Number;
 
+  var BUFFER_TIME:Number = 1;
+
   // Idle detection
   private var ui_idle_count:Number = 0;
   private var ui_idle_xmouse:Number;
@@ -129,8 +131,24 @@ class com.bomberstudios.video.Player {
       play();
     }
   }
-  function seek_to(pos:Number){
-    ns.seek(pos);
+  function seek_to(time_in_seconds:Number){
+    trace('seek_to(' + time_in_seconds + ')');
+    if(time_to_bytes(time_in_seconds) <= ns.bytesLoaded){
+      ns.seek(time_in_seconds);
+    } else {
+      var times = metadata.keyframes.times;
+      var positions = metadata.keyframes.filepositions;
+      var tofind = time_in_seconds;
+      for (var i:Number = 0; i < times.length; i++) {
+        var j = i + 1;
+        if ((times[i] <= tofind) && (times[j] >= tofind)) {
+          trace ("match at " + times[i] + " and " + positions[i]);
+          video_path = video_path.split('?start')[0] + "?start=" + (positions[i]);
+          ns.play (video_path);
+          break;
+        }
+      }
+    }
   }
 
   // Run loop
@@ -356,9 +374,13 @@ class com.bomberstudios.video.Player {
     return Math.floor((time / metadata.duration) * max_width + left - 3);
   }
   private function position_to_time(x_pos:Number):Number{
-    trace("position_to_time("+x_pos+")");
     var max_width = mc.transport.progress_bar_bg._width;
-    trace(max_width);
     return (x_pos / max_width) * metadata.duration;
+  }
+  private function time_to_bytes(seconds:Number){
+    return seconds / metadata.duration * ns.bytesTotal;
+  }
+  private function bytes_to_time(bytes:Number){
+    return bytes / ns.bytesTotal * metadata.duration;
   }
 }
