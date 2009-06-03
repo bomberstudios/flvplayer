@@ -172,6 +172,11 @@ class com.bomberstudios.video.Player {
   function on_video_end(){
     show_placeholder();
   }
+  function on_progress_bar_click(){
+    hide_placeholder();
+    var x_pos = mc._xmouse - (mc.transport._x + mc.transport.progress_bar_bg._x);
+    seek_to(position_to_time(x_pos));
+  }
 
   // UI
   function set_width(w:Number){
@@ -215,7 +220,7 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('progress_bar_bg','progress_bar_bg',LEVEL_PROGRESS_BG,{_x:progress_bar_position});
     mc.transport.attachMovie('progress_bar_load','progress_bar_load',LEVEL_PROGRESS_LOAD,{_x:progress_bar_position,_width: 0});
     mc.transport.attachMovie('progress_bar_position','progress_bar_position',LEVEL_PROGRESS_POSITION,{_x:progress_bar_position,_width:0});
-
+    mc.transport.progress_bar_bg.onRelease = Delegate.create(this,on_progress_bar_click);
   }
   private function redraw(){
     var tentative_video_height = Stage.width / aspect_ratio;
@@ -336,9 +341,15 @@ class com.bomberstudios.video.Player {
     marker.onRelease = Delegate.create(this,seek_to,time);
     marker.onRollOver = Delegate.create(this,on_cue_marker_rollover,name);
   }
-  private function time_to_position(pos:Number){
+  private function time_to_position(time:Number){
     var left = mc.transport.progress_bar_bg._x;
     var max_width = mc.transport.progress_bar_bg._width;
-    return Math.floor((pos / metadata.duration) * max_width + left - 3);
+    return Math.floor((time / metadata.duration) * max_width + left - 3);
+  }
+  private function position_to_time(x_pos:Number):Number{
+    trace("position_to_time("+x_pos+")");
+    var max_width = mc.transport.progress_bar_bg._width;
+    trace(max_width);
+    return (x_pos / max_width) * metadata.duration;
   }
 }
