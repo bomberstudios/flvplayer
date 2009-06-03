@@ -61,6 +61,29 @@ class com.bomberstudios.video.Player {
   function toString(){
     return "FLVPlayer v1.0";
   }
+  private function setup_video(){
+    nc = new NetConnection();
+    nc.connect(null);
+    ns = new NetStream(nc);
+    ns.setBufferTime(BUFFER_TIME);
+
+    // create and set sound object
+    var snd = mc.createEmptyMovieClip("snd", LEVEL_SOUND);
+    snd.attachAudio(ns);
+    audio = new Sound(snd);
+
+    // attach video
+    video_mc.attachVideo(ns);
+
+    // Video events...
+    ns.onStatus = Delegate.create(this,on_video_status);
+    ns.onMetaData = Delegate.create(this,on_video_metadata);
+
+    // Set play status
+    started = false;
+    is_playing = false;
+  }
+
 
   // Video Data
   public function get video_path():String {
@@ -99,6 +122,7 @@ class com.bomberstudios.video.Player {
     ns.pause();
   }
   function toggle_play(){
+    hide_placeholder();
     if(is_playing){
       pause();
     } else {
@@ -170,7 +194,10 @@ class com.bomberstudios.video.Player {
     redraw();
   }
   function on_video_end(){
+    seek_to(0);
+    pause();
     show_placeholder();
+    show_play_button();
   }
   function on_progress_bar_click(){
     hide_placeholder();
@@ -204,8 +231,7 @@ class com.bomberstudios.video.Player {
     mc.transport.attachMovie('bg_right','bg_right',LEVEL_TRANSPORT_BG_RIGHT,{_x:mc.transport.bg_center._x + mc.transport.bg_center._width});
 
     // Play button
-    mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
-    make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
+    show_play_button();
 
     // Fullscreen button
     mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
@@ -261,27 +287,9 @@ class com.bomberstudios.video.Player {
     btn.onRollOver = Delegate.create(this,on_rollover_btn,btn);
     btn.onRollOut = Delegate.create(this,on_rollout_btn,btn);
   }
-  private function setup_video(){
-    nc = new NetConnection();
-    nc.connect(null);
-    ns = new NetStream(nc);
-    ns.setBufferTime(5);
-
-    // create and set sound object
-    var snd = mc.createEmptyMovieClip("snd", LEVEL_SOUND);
-    snd.attachAudio(ns);
-    audio = new Sound(snd);
-
-    // attach video
-    video_mc.attachVideo(ns);
-
-    // Video events...
-    ns.onStatus = Delegate.create(this,on_video_status);
-    ns.onMetaData = Delegate.create(this,on_video_metadata);
-
-    // Set play status
-    started = false;
-    is_playing = false;
+  private function show_play_button(){
+    mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
+    make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
   }
 
   // Audio
