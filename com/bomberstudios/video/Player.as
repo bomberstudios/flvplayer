@@ -319,8 +319,8 @@ class com.bomberstudios.video.Player {
     mc.placeholder._visible = false;
   }
   function show_placeholder(){
-    mc.placeholder.img._x = Math.floor(video_mc._width / 2 - mc.placeholder.img._width / 2)
-    mc.placeholder.img._y = Math.floor(video_mc._height / 2 - mc.placeholder.img._height / 2)
+    mc.placeholder._x = video_mc._x + Math.floor(video_mc._width / 2 - mc.placeholder.img._width / 2)
+    mc.placeholder._y = video_mc._y + Math.floor(video_mc._height / 2 - mc.placeholder.img._height / 2)
     mc.placeholder._visible = true;
   }
 
