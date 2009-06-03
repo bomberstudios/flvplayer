@@ -111,7 +111,6 @@ class com.bomberstudios.video.Player {
     }
     mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
     make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
-    hide_placeholder();
   }
   function pause(){
     if(is_paused){
@@ -173,6 +172,9 @@ class com.bomberstudios.video.Player {
     }
     ui_idle_xmouse = mc._xmouse;
     ui_idle_ymouse = mc._ymouse;
+    if (is_playing) {
+      hide_placeholder();
+    }
   }
 
   // Events
