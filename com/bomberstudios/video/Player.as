@@ -1,3 +1,6 @@
+/*
+  flvplayer v1.2
+*/
 import com.bomberstudios.utils.Delegate;
 import com.bomberstudios.fx.DropShadow;
 import com.bomberstudios.text.Styles;
