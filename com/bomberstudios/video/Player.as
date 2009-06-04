@@ -1,4 +1,6 @@
 import com.bomberstudios.utils.Delegate;
+import com.bomberstudios.fx.DropShadow;
+import com.bomberstudios.text.Styles;
 import flash.geom.Rectangle; // needed for fullscreen hardware scaling
 
 class com.bomberstudios.video.Player {
@@ -328,8 +330,22 @@ class com.bomberstudios.video.Player {
   }
   function display_message(txt:String){
     mc.createEmptyMovieClip('msg',LEVEL_MESSAGE);
-    mc.msg.createTextField('msg_txt',1,Stage.width/2,Stage.height/2,200,50);
+    mc.msg.createTextField('msg_txt',200,5,5,200,50);
+    mc.msg.msg_txt.embedFonts = true;
+    mc.msg.msg_txt.wordWrap = true;
+    mc.msg.msg_txt.autoSize = true;
+    mc.msg.msg_txt.setNewTextFormat(Styles.txt_bold_white);
     mc.msg.msg_txt.text = txt;
+    mc.msg.createEmptyMovieClip('bg',100);
+    mc.msg.bg.beginFill(0x000000,70);
+    mc.msg.bg.lineTo(mc.msg.msg_txt._width + 10,0);
+    mc.msg.bg.lineTo(mc.msg.msg_txt._width + 10,mc.msg.msg_txt._height + 10);
+    mc.msg.bg.lineTo(0,mc.msg.msg_txt._height + 10);
+    mc.msg.bg.lineTo(0,0);
+    mc.msg.bg.endFill();
+    DropShadow.create(mc.msg.msg_txt);
+    mc.msg._x = Stage.width / 2 - mc.msg._width/2;
+    mc.msg._y = Stage.height / 2 - mc.msg._height/2;
   }
   function hide_message(){
     mc.msg.removeMovieClip();
