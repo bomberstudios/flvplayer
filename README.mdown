@@ -49,6 +49,10 @@ You can use the following variables in your HTML:
 The player supports FLV pseudostreaming. Take a look at the sample sinatra
 app, based on http://github.com/hubertlepicki/sinatra-flv-streaming-example
 
+The sinatra app requires the 'rack-contrib' gem, so install it with:
+
+    $ gem install rack-contrib
+
 To use pseudostreaming in your FLV files, they *need* to contain some
 metadata. You can embed this metadata by using flvtool2:
 
