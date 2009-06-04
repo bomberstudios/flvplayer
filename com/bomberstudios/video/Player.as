@@ -143,21 +143,30 @@ class com.bomberstudios.video.Player {
     if(time_in_seconds < ns.time || time_to_bytes(time_in_seconds) > ns.bytesLoaded){
       // show buffering banner
       display_message('Buffering');
+
+      // special case for 0
+      if (time_in_seconds == 0) {
+        stream_to(0);
+        return;
+      }
+
       var times = metadata.keyframes.times;
       var positions = metadata.keyframes.filepositions;
       var tofind = time_in_seconds;
       for (var i:Number = 0; i < times.length; i++) {
         var j = i + 1;
         if ((times[i] <= tofind) && (times[j] >= tofind)) {
-          trace ("match at " + times[i] + " and " + positions[i]);
-          video_path = video_path.split('?start')[0] + "?start=" + (positions[i]);
-          ns.play(video_path);
+          stream_to(positions[i]);
           return;
         }
       }
     } else {
       ns.seek(time_in_seconds);
     }
+  }
+  function stream_to(position_in_bytes:Number){
+    video_path = video_path.split('?start')[0] + "?start=" + position_in_bytes;
+    ns.play(video_path);
   }
 
 
