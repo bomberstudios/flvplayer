@@ -58,7 +58,7 @@ end
 Rake::PackageTask.new(APP, :noversion) do |p|
   p.need_zip = true
   p.name = Time.now.strftime("%Y%m%d") + "-" + APP
-  p.package_files.include("README",Dir["deploy/*"])
+  p.package_files.include("README.mdown",'app.rb',Dir["deploy/*"])
 end
 
 
