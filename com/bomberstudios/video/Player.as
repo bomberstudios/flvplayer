@@ -113,16 +113,13 @@ class com.bomberstudios.video.Player {
     } else {
       ns.pause(false);
     }
-    mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
-    make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
+    show_pause_button();
   }
   function pause(){
     if(is_paused){
-      mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
-      make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
+      show_pause_button();
     } else {
-      mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
-      make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
+      show_play_button();
     }
     is_paused = !is_paused;
     ns.pause();
@@ -342,6 +339,10 @@ class com.bomberstudios.video.Player {
   private function show_play_button(){
     mc.transport.attachMovie('btn_play','btn_play',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
     make_button(mc.transport.btn_play,Delegate.create(this,toggle_play));
+  }
+  private function show_pause_button(){
+    mc.transport.attachMovie('btn_pause','btn_pause',LEVEL_BTN_PLAY,{_x:BUTTON_MARGIN, _y:BUTTON_MARGIN});
+    make_button(mc.transport.btn_pause,Delegate.create(this,toggle_play));
   }
   function display_message(txt:String){
     mc.createEmptyMovieClip('msg',LEVEL_MESSAGE);
