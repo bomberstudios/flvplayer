@@ -223,7 +223,10 @@ class com.bomberstudios.video.Player {
     }
   }
   function on_cue_marker_rollover(txt:String){
-    trace(txt);
+    display_message(txt);
+  }
+  function on_cue_marker_rollout(){
+    hide_message();
   }
   function onResize(e){
     redraw();
@@ -414,6 +417,7 @@ class com.bomberstudios.video.Player {
     var marker = mc.transport.attachMovie('cue_marker','cue_marker_'+id,LEVEL_CUE_MARKERS + id,{_x: time_to_position(time)});
     marker.onRelease = Delegate.create(this,seek_to,time);
     marker.onRollOver = Delegate.create(this,on_cue_marker_rollover,name);
+    marker.onRollOut = Delegate.create(this,on_cue_marker_rollout);
   }
   private function time_to_position(time:Number){
     var left = mc.transport.progress_bar_bg._x;
