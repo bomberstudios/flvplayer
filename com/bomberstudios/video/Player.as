@@ -164,6 +164,11 @@ class com.bomberstudios.video.Player {
   function stream_to(position_in_bytes:Number){
     video_path = video_path.split('?start')[0] + "?start=" + position_in_bytes;
     ns.play(video_path);
+    if (is_paused) {
+      // workaround for #1
+      is_paused = false;
+      show_pause_button();
+    }
   }
 
 
