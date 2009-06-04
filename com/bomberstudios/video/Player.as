@@ -136,10 +136,11 @@ class com.bomberstudios.video.Player {
     }
   }
   function seek_to(time_in_seconds:Number){
-    trace('seek_to(' + time_in_seconds + ')');
-    if(time_to_bytes(time_in_seconds) <= ns.bytesLoaded){
-      ns.seek(time_in_seconds);
-    } else {
+    // Possible scenarios:
+    // - no streaming
+    // - streaming, seek to future
+    // - streaming, seek to past (not available data)
+    if(time_in_seconds < ns.time || time_to_bytes(time_in_seconds) > ns.bytesLoaded){
       // show buffering banner
       display_message('Buffering');
       var times = metadata.keyframes.times;
@@ -150,10 +151,12 @@ class com.bomberstudios.video.Player {
         if ((times[i] <= tofind) && (times[j] >= tofind)) {
           trace ("match at " + times[i] + " and " + positions[i]);
           video_path = video_path.split('?start')[0] + "?start=" + (positions[i]);
-          ns.play (video_path);
-          break;
+          ns.play(video_path);
+          return;
         }
       }
+    } else {
+      ns.seek(time_in_seconds);
     }
   }
 
