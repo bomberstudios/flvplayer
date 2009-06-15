@@ -312,11 +312,11 @@ class com.bomberstudios.video.Player {
     redraw_transport();
   }
   private function redraw_transport(){
-    mc.transport.bg_center._width = video_mc._width - mc.transport.bg_left._width - mc.transport.bg_right._width;
-    mc.transport.bg_right._x = video_mc._width - mc.transport.bg_right._width;
-    mc.transport.ico_sound._x = video_mc._width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
-    mc.transport.ico_sound_muted._x = video_mc._width - mc.transport.ico_sound_muted._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
-    mc.transport.ico_fullscreen._x = video_mc._width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
+    mc.transport.bg_center._width = Stage.width - mc.transport.bg_left._width - mc.transport.bg_right._width;
+    mc.transport.bg_right._x = Stage.width - mc.transport.bg_right._width;
+    mc.transport.ico_sound._x = Stage.width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
+    mc.transport.ico_sound_muted._x = Stage.width - mc.transport.ico_sound_muted._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
+    mc.transport.ico_fullscreen._x = Stage.width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
     mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
     if (mc.transport.ico_sound) {
       mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
