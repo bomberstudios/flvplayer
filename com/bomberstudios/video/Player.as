@@ -308,8 +308,7 @@ class com.bomberstudios.video.Player {
     } else {
       set_width(Stage.width);
     }
-    video_mc._y = Stage.height / 2 - video_mc._height/2;
-    video_mc._x = Stage.width / 2 - video_mc._width/2;
+    center_on_stage(video_mc);
     redraw_transport();
   }
   private function redraw_transport(){
@@ -368,8 +367,7 @@ class com.bomberstudios.video.Player {
     mc.msg.bg.lineTo(0,0);
     mc.msg.bg.endFill();
     DropShadow.create(mc.msg.msg_txt);
-    mc.msg._x = Stage.width / 2 - mc.msg._width/2;
-    mc.msg._y = Stage.height / 2 - mc.msg._height/2;
+    center_on_stage(mc.msg);
   }
   function hide_message(){
     mc.msg.removeMovieClip();
@@ -413,14 +411,18 @@ class com.bomberstudios.video.Player {
     var loader:MovieClipLoader = new MovieClipLoader();
     loader.onLoadInit = Delegate.create(this,show_placeholder);
     loader.loadClip(uri,mc.placeholder.img);
+    redraw_transport();
   }
   function hide_placeholder(){
     mc.placeholder._visible = false;
   }
   function show_placeholder(){
-    mc.placeholder._x = video_mc._x + Math.floor(video_mc._width / 2 - mc.placeholder.img._width / 2)
-    mc.placeholder._y = video_mc._y + Math.floor(video_mc._height / 2 - mc.placeholder.img._height / 2)
+    center_on_stage(mc.placeholder);
     mc.placeholder._visible = true;
+  }
+  function center_on_stage(mc:MovieClip){
+    mc._x = Math.floor(Stage.width / 2 - mc._width / 2)
+    mc._y = Math.floor(Stage.height / 2 - mc._height / 2)
   }
 
 
