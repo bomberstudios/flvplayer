@@ -324,8 +324,8 @@ class com.bomberstudios.video.Player {
       mc.transport.progress_bar_bg._width = mc.transport.ico_sound_muted._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
     }
     mc.transport.progress_bar_load._x = mc.transport.progress_bar_position._x = mc.transport.progress_bar_bg._x + 1;
-    mc.transport._y = video_mc._y + video_mc._height - mc.transport._height;
-    mc.transport._x = video_mc._x;
+    mc.transport._y = Stage.height - mc.transport._height;
+    mc.transport._x = 0;
     update_cue_markers();
   }
   private function update_progress_bar(){
