@@ -210,7 +210,6 @@ class com.bomberstudios.video.Player {
     btn.attachMovie(btn._name,btn._name,1);
   }
   function on_video_status(s:Object){
-    //trace(s.code);
     switch (s.code) {
       case "NetStream.Buffer.Full":
         hide_message();
@@ -309,7 +308,6 @@ class com.bomberstudios.video.Player {
       set_width(Stage.width);
     }
     center_on_stage(video_mc);
-    redraw_transport();
   }
   private function redraw_transport(){
     mc.transport.bg_center._width = Stage.width - mc.transport.bg_left._width - mc.transport.bg_right._width;
@@ -400,14 +398,7 @@ class com.bomberstudios.video.Player {
   // Placeholder image
   function load_placeholder(uri:String){
     mc.createEmptyMovieClip('placeholder',LEVEL_PLACEHOLDER);
-    mc.placeholder.createEmptyMovieClip('bg',100);
-    mc.placeholder.createEmptyMovieClip('img',200);
-    mc.placeholder.bg.beginFill(0x000000,100);
-    mc.placeholder.bg.lineTo(video_mc._width,0);
-    mc.placeholder.bg.lineTo(video_mc._width,video_mc._height);
-    mc.placeholder.bg.lineTo(0,video_mc._height);
-    mc.placeholder.bg.lineTo(0,0);
-    mc.placeholder.bg.endFill();
+    mc.placeholder.createEmptyMovieClip('img',100);
     var loader:MovieClipLoader = new MovieClipLoader();
     loader.onLoadInit = Delegate.create(this,show_placeholder);
     loader.loadClip(uri,mc.placeholder.img);
