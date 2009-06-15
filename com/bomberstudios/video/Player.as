@@ -260,8 +260,8 @@ class com.bomberstudios.video.Player {
 
   // UI
   function set_width(w:Number){
-    video_mc._width = w;
-    video_mc._height = w / aspect_ratio;
+    video_mc._width = Math.floor(w);
+    video_mc._height = Math.floor(w / aspect_ratio);
     redraw_transport();
   }
   function hide_transport(){
