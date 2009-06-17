@@ -55,6 +55,8 @@ helpers do
       so.addVariable('aspect_ratio',16/9);
       so.addVariable('placeholder','/placeholder');
       so.addVariable('video_path','/video');
+      so.addVariable('watermark','/watermark.png');
+      so.addVariable('has_streaming',true);
       so.write("flashcontent");
     </script>
     <p>
@@ -85,4 +87,7 @@ get '/video' do
 end
 get '/swfobject' do
   send_file "deploy/swfobject.js", :disposition => 'inline'
+end
+get '/watermark.png' do
+  send_file "deploy/watermark.png", :disposition => 'inline'
 end
