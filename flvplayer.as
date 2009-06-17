@@ -14,6 +14,9 @@ class flvplayer {
     if (_timeline.watermark) {
       _video.load_watermark(_timeline.watermark);
     }
+    if (_timeline.has_streaming) {
+      _video.has_streaming = _timeline.has_streaming;
+    }
     _video.placeholder_path = _timeline.placeholder;
     if (_timeline.autoplay != undefined) {
       _video.toggle_play();
