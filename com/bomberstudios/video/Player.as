@@ -1,5 +1,5 @@
 /*
-  flvplayer v1.3
+  flvplayer v1.4
 */
 import com.bomberstudios.utils.Delegate;
 import com.bomberstudios.fx.DropShadow;
