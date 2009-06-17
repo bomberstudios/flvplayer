@@ -42,7 +42,10 @@ You can use the following variables in your HTML:
                    By default it's 16/9, but if the FLV contains width
                    and height metadata it will be used for auto aspect_ratio
                    calculation.
-
+    
+    watermark    - URL to an image to be displayed at the bottom right of the
+                   video (like a TV station logo, for example)
+    
 
 ## FLV Streaming
 

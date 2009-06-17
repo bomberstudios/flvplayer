@@ -11,6 +11,9 @@ class flvplayer {
     _video.aspect_ratio = _timeline.aspect_ratio;
     _video.set_width(Stage.width);
     _video.video_path = _timeline.video_path;
+    if (_timeline.watermark) {
+      _video.load_watermark(_timeline.watermark);
+    }
     _video.placeholder_path = _timeline.placeholder;
     if (_timeline.autoplay != undefined) {
       _video.toggle_play();

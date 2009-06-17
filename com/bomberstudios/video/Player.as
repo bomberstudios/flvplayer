@@ -42,6 +42,7 @@ class com.bomberstudios.video.Player {
 
   // Levels for movieclips
   var LEVEL_VIDEODISPLAY:Number         = 100;
+  var LEVEL_WATERMARK:Number            = 120;
   var LEVEL_PLACEHOLDER:Number          = 150;
   var LEVEL_TRANSPORT:Number            = 200;
   var LEVEL_TRANSPORT_BG_LEFT:Number      = 100;
@@ -308,6 +309,7 @@ class com.bomberstudios.video.Player {
       set_width(Stage.width);
     }
     center_on_stage(video_mc);
+    position_watermark();
   }
   private function redraw_transport(){
     mc.transport.bg_center._width = Stage.width - mc.transport.bg_left._width - mc.transport.bg_right._width;
@@ -416,6 +418,18 @@ class com.bomberstudios.video.Player {
     mc._y = Math.floor(Stage.height / 2 - mc._height / 2)
   }
 
+  // Watermark
+  function load_watermark(uri:String){
+    mc.createEmptyMovieClip('watermark',LEVEL_WATERMARK);
+    mc.watermark.createEmptyMovieClip('img',100);
+    var loader:MovieClipLoader = new MovieClipLoader();
+    loader.onLoadInit = Delegate.create(this,position_watermark);
+    loader.loadClip(uri,mc.watermark.img);
+  }
+  function position_watermark(){
+    mc.watermark._x = Stage.width - mc.watermark._width - (BUTTON_MARGIN * 3);
+    mc.watermark._y = Stage.height - mc.watermark._height - (BUTTON_MARGIN * 3);
+  }
 
   // Video Markers
   function update_cue_markers(){
