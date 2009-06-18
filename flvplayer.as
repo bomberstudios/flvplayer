@@ -17,6 +17,9 @@ class flvplayer {
     if (_timeline.has_streaming) {
       _video.has_streaming = _timeline.has_streaming;
     }
+    if (_timeline.fullscreen) {
+      _video.fullscreen_enabled = true;
+    }
     _video.placeholder_path = _timeline.placeholder;
     if (_timeline.autoplay != undefined) {
       _video.toggle_play();

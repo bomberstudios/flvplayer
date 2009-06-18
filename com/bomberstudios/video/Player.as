@@ -21,6 +21,7 @@ class com.bomberstudios.video.Player {
   var has_streaming:Boolean = false;
   var started:Boolean;
   var run_loop_id:Number;
+  var fullscreen_available:Boolean = false;
 
   var BUFFER_TIME:Number = 3;
 
@@ -265,6 +266,10 @@ class com.bomberstudios.video.Player {
 
 
   // UI
+  public function set fullscreen_enabled(v:Boolean){
+    fullscreen_available = v;
+    create_ui();
+  }
   function set_width(w:Number){
     video_mc._width = Math.floor(w);
     video_mc._height = Math.floor(w / aspect_ratio);
@@ -293,8 +298,10 @@ class com.bomberstudios.video.Player {
     show_play_button();
 
     // Fullscreen button
-    mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
-    make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
+    if (fullscreen_available) {
+      mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
+      make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
+    }
 
     // Sound button
     mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:BUTTON_MARGIN});
@@ -320,10 +327,16 @@ class com.bomberstudios.video.Player {
   private function redraw_transport(){
     mc.transport.bg_center._width = Stage.width - mc.transport.bg_left._width - mc.transport.bg_right._width;
     mc.transport.bg_right._x = Stage.width - mc.transport.bg_right._width;
-    mc.transport.ico_sound._x = Stage.width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
-    mc.transport.ico_sound_muted._x = Stage.width - mc.transport.ico_sound_muted._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
-    mc.transport.ico_fullscreen._x = Stage.width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
-    mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
+    if (fullscreen_available) {
+      mc.transport.ico_sound._x = Stage.width - mc.transport.ico_sound._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
+      mc.transport.ico_sound_muted._x = Stage.width - mc.transport.ico_sound_muted._width - mc.transport.ico_fullscreen._width - (BUTTON_MARGIN*2);
+      mc.transport.ico_fullscreen._x = Stage.width - mc.transport.ico_fullscreen._width - BUTTON_MARGIN;
+      mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = mc.transport.ico_fullscreen._y = BUTTON_MARGIN;
+    } else {
+      mc.transport.ico_sound._x = Stage.width - mc.transport.ico_sound._width - BUTTON_MARGIN;
+      mc.transport.ico_sound_muted._x = Stage.width - mc.transport.ico_sound_muted._width - BUTTON_MARGIN;
+      mc.transport.ico_sound._y = mc.transport.ico_sound_muted._y = BUTTON_MARGIN;
+    }
     if (mc.transport.ico_sound) {
       mc.transport.progress_bar_bg._width = mc.transport.ico_sound._x - mc.transport.progress_bar_bg._x - (BUTTON_MARGIN*2);
     } else {

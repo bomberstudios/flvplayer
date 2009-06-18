@@ -54,6 +54,10 @@ You can use the following variables in your HTML:
                      http://path.to.video.file.flv?start=XXXXXXXX
                      
                      Default: false.
+    
+    fullscreen     - Set to anything if you want to enable the fullscreen
+                     button. You also need to set the allowFullScreen
+                     variable with so.addParam('allowFullScreen',true);
 
 
 ## FLV Streaming
