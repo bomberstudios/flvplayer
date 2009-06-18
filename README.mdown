@@ -28,36 +28,66 @@ The main goals of the project are:
     </script>
 
 
-You can use the following variables in your HTML:
+### Setup
 
-    placeholder    - URL to the image you want to display as a placeholder.
-                     It is displayed before the video plays, and after it ends.
-    
-    video_path     - URL to the FLV video you want to play.
-    
-    autoplay       - Boolean. If 'true', the video will play when the SWF
-                     is loaded. Default: false.
-    
-    aspect_ratio   - Default aspect ratio to be used for your movie.
-                     By default it's 16/9, but if the FLV contains width
-                     and height metadata it will be used for auto aspect_ratio
-                     calculation.
-    
-    watermark      - URL to an image to be displayed at the bottom right of the
-                     video (like a TV station logo, for example)
-    
-    has_streaming  - Boolean. If 'true', the player will support pseudostreaming,
-                     and whenever the user tries to watch a segment that is not
-                     loaded yet, the player will make a request to the server,
-                     with this format:
-                     
-                     http://path.to.video.file.flv?start=XXXXXXXX
-                     
-                     Default: false.
-    
-    fullscreen     - Set to anything if you want to enable the fullscreen
-                     button. You also need to set the allowFullScreen
-                     variable with so.addParam('allowFullScreen',true);
+You can use the following variables in your HTML (* are required):
+
+#### video_path*
+
+    so.addVariable('video_path','video.flv');
+
+String. URL to the FLV video you want to play. It can be relative
+('/video/test.flv') or absolute ('http://site.com/video/test.flv)
+
+
+#### placeholder
+
+    so.addVariable('placeholder','placeholder.jpg');
+
+String. URL to the image you want to display as a placeholder.
+It is displayed before the video plays, and after it ends.
+
+
+#### autoplay
+
+    so.addVariable('autoplay');
+
+Makes the video play automatically when the SWF is loaded.
+
+
+#### aspect_ratio
+
+    so.addVariable('aspect_ratio',16/9);
+
+Number. Default aspect ratio to be used for your movie. By default it's 16/9,
+but if the FLV contains width and height metadata it will be used for auto
+aspect_ratio calculation.
+
+
+#### watermark
+
+    so.addVariable('watermark','logo.png');
+
+String. URL to an image to be displayed at the bottom right of the video (like a TV station logo, for example)
+
+
+#### has_streaming
+
+    so.addVariable('has_streaming');
+
+Enable pseudostreaming support.
+
+Whenever the user tries to watch a segment that is not loaded yet, the player will make a request to the server, with this format:
+
+    http://path.to.video.file.flv?start=XXXXXXXX
+
+
+#### fullscreen
+
+    so.addVariable('fullscreen');
+    so.addParam('allowFullScreen',true);
+
+Enable the fullscreen button. You also need to set the allowFullScreen variable with
 
 
 ## FLV Streaming
