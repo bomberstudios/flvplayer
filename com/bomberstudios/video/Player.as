@@ -45,8 +45,8 @@ class com.bomberstudios.video.Player {
 
   // Levels for movieclips
   var LEVEL_VIDEODISPLAY:Number         = 100;
-  var LEVEL_WATERMARK:Number            = 120;
   var LEVEL_PLACEHOLDER:Number          = 150;
+  var LEVEL_WATERMARK:Number            = 170;
   var LEVEL_TRANSPORT:Number            = 200;
   var LEVEL_TRANSPORT_BG_LEFT:Number      = 100;
   var LEVEL_TRANSPORT_BG_CENTER:Number    = 200;
