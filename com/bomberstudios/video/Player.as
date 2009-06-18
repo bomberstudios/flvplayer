@@ -268,7 +268,7 @@ class com.bomberstudios.video.Player {
   // UI
   public function set fullscreen_enabled(v:Boolean){
     fullscreen_available = v;
-    create_ui();
+    redraw();
   }
   function set_width(w:Number){
     video_mc._width = Math.floor(w);
@@ -285,8 +285,6 @@ class com.bomberstudios.video.Player {
     // Video display
     mc.attachMovie('VideoDisplay','VideoDisplay',LEVEL_VIDEODISPLAY);
     video_mc = mc.VideoDisplay.vid;
-    video_mc._width  = Stage.width;
-    video_mc._height = Stage.height;
 
     // Transport bar
     mc.createEmptyMovieClip('transport',LEVEL_TRANSPORT);
@@ -321,8 +319,8 @@ class com.bomberstudios.video.Player {
     } else {
       set_width(Stage.width);
     }
-    center_on_stage(video_mc);
     position_watermark();
+    center_on_stage(video_mc);
   }
   private function redraw_transport(){
     mc.transport.bg_center._width = Stage.width - mc.transport.bg_left._width - mc.transport.bg_right._width;
