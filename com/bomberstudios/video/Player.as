@@ -418,6 +418,7 @@ class com.bomberstudios.video.Player {
   function show_placeholder(){
     center_on_stage(mc.placeholder);
     mc.placeholder._visible = true;
+    mc.placeholder.onRelease = Delegate.create(this,toggle_play);
   }
   function center_on_stage(mc:MovieClip){
     mc._x = Math.floor(Stage.width / 2 - mc._width / 2)
