@@ -45,7 +45,7 @@ task :compile => [:assets] do
   end
   puts %x(swfmill simple #{APP}.xml #{APP}.swf)
   rm "#{APP}.xml", {:verbose => false}
-  puts %x(mtasc -swf #{APP}.swf -main -mx -version #{PLAYER} #{trace} #{APP}.as)
+  puts %x(mtasc -strict -swf #{APP}.swf -main -mx -version #{PLAYER} #{trace} #{APP}.as)
   @end = Time.now
 
   ["*.html","*.swf"].each do |list|

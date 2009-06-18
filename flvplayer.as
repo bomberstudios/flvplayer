@@ -4,7 +4,7 @@ class flvplayer {
   var _timeline:MovieClip;
   var _video:com.bomberstudios.video.Player;
 
-  function flvplayer(timeline){
+  function flvplayer(timeline:MovieClip){
     trace("Starting app...");
     _timeline = timeline;
     _video = new Player(_timeline);

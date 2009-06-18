@@ -40,7 +40,7 @@ class com.bomberstudios.video.Player {
   var $placeholder_path:String;
 
   // Some constants for UI redrawing
-  var BUTTON_MARGIN = 3;
+  var BUTTON_MARGIN:Number = 3;
   var RUN_LOOP_SLEEP:Number = 25;
 
   // Levels for movieclips
@@ -71,7 +71,7 @@ class com.bomberstudios.video.Player {
     setup_video();
     start_run_loop();
   }
-  function toString(){
+  function toString():String{
     return "FLVPlayer v1.0";
   }
   private function setup_video(){
@@ -81,7 +81,7 @@ class com.bomberstudios.video.Player {
     ns.setBufferTime(BUFFER_TIME);
 
     // create and set sound object
-    var snd = mc.createEmptyMovieClip("snd", LEVEL_SOUND);
+    var snd:MovieClip = mc.createEmptyMovieClip("snd", LEVEL_SOUND);
     snd.attachAudio(ns);
     audio = new Sound(snd);
 
@@ -155,11 +155,11 @@ class com.bomberstudios.video.Player {
           return;
         }
 
-        var times = metadata.keyframes.times;
-        var positions = metadata.keyframes.filepositions;
-        var tofind = time_in_seconds;
+        var times:Array = metadata.keyframes.times;
+        var positions:Array = metadata.keyframes.filepositions;
+        var tofind:Number = time_in_seconds;
         for (var i:Number = 0; i < times.length; i++) {
-          var j = i + 1;
+          var j:Number = i + 1;
           if ((times[i] <= tofind) && (times[j] >= tofind)) {
             stream_to(positions[i]);
             return;
@@ -231,15 +231,15 @@ class com.bomberstudios.video.Player {
     // set aspect ratio
     aspect_ratio = s.width / s.height;
     metadata = s;
-    for(var key in metadata){
+    for(var key:String in metadata){
       if (key == "cuePoints") {
         on_cue_markers(s[key]);
       }
     }
     redraw();
   }
-  function on_cue_markers(markers_array){
-    for(var key in markers_array){
+  function on_cue_markers(markers_array:Array){
+    for(var key:String in markers_array){
       cue_markers.push({id: key, name: markers_array[key].name, time: markers_array[key].time});
     }
   }
@@ -249,7 +249,7 @@ class com.bomberstudios.video.Player {
   function on_cue_marker_rollout(){
     hide_message();
   }
-  function onResize(e){
+  function onResize(e:Object){
     redraw();
   }
   function on_video_end(){
@@ -260,7 +260,7 @@ class com.bomberstudios.video.Player {
   }
   function on_progress_bar_click(){
     hide_placeholder();
-    var x_pos = mc._xmouse - (mc.transport._x + mc.transport.progress_bar_bg._x);
+    var x_pos:Number = mc._xmouse - (mc.transport._x + mc.transport.progress_bar_bg._x);
     seek_to(position_to_time(x_pos));
   }
 
@@ -308,14 +308,14 @@ class com.bomberstudios.video.Player {
     make_button(mc.transport.ico_sound,Delegate.create(this,toggle_audio));
 
     // Progress bar
-    var progress_bar_position = mc.transport.btn_play._x + mc.transport.btn_play._width + ( BUTTON_MARGIN * 2 );
+    var progress_bar_position:Number = mc.transport.btn_play._x + mc.transport.btn_play._width + ( BUTTON_MARGIN * 2 );
     mc.transport.attachMovie('progress_bar_bg','progress_bar_bg',LEVEL_PROGRESS_BG,{_x:progress_bar_position});
     mc.transport.attachMovie('progress_bar_load','progress_bar_load',LEVEL_PROGRESS_LOAD,{_x:progress_bar_position,_width: 0});
     mc.transport.attachMovie('progress_bar_position','progress_bar_position',LEVEL_PROGRESS_POSITION,{_x:progress_bar_position,_width:0});
     mc.transport.progress_bar_bg.onRelease = Delegate.create(this,on_progress_bar_click);
   }
   private function redraw(){
-    var tentative_video_height = Stage.width / aspect_ratio;
+    var tentative_video_height:Number = Stage.width / aspect_ratio;
     if(tentative_video_height > Stage.height){
       set_width(Stage.height * aspect_ratio);
     } else {
@@ -453,30 +453,30 @@ class com.bomberstudios.video.Player {
 
   // Video Markers
   function update_cue_markers(){
-    for (var i=0 ; i < cue_markers.length; i++){
-      var current_cue = cue_markers[i];
+    for (var i:Number=0 ; i < cue_markers.length; i++){
+      var current_cue:Object = cue_markers[i];
       add_marker(current_cue.id,current_cue.name,current_cue.time);
     }
   }
-  function add_marker(id,name,time){
-    var marker = mc.transport.attachMovie('cue_marker','cue_marker_'+id,LEVEL_CUE_MARKERS + id,{_x: time_to_position(time)});
+  function add_marker(id:Number,name:String,time:Number){
+    var marker:MovieClip = mc.transport.attachMovie('cue_marker','cue_marker_'+id,LEVEL_CUE_MARKERS + id,{_x: time_to_position(time)});
     marker.onRelease = Delegate.create(this,seek_to,time);
     marker.onRollOver = Delegate.create(this,on_cue_marker_rollover,name);
     marker.onRollOut = Delegate.create(this,on_cue_marker_rollout);
   }
-  private function time_to_position(time:Number){
-    var left = mc.transport.progress_bar_bg._x;
-    var max_width = mc.transport.progress_bar_bg._width;
+  private function time_to_position(time:Number):Number{
+    var left:Number = mc.transport.progress_bar_bg._x;
+    var max_width:Number = mc.transport.progress_bar_bg._width;
     return Math.floor((time / metadata.duration) * max_width + left - 3);
   }
   private function position_to_time(x_pos:Number):Number{
-    var max_width = mc.transport.progress_bar_bg._width;
+    var max_width:Number = mc.transport.progress_bar_bg._width;
     return (x_pos / max_width) * metadata.duration;
   }
-  private function time_to_bytes(seconds:Number){
+  private function time_to_bytes(seconds:Number):Number{
     return seconds / metadata.duration * ns.bytesTotal;
   }
-  private function bytes_to_time(bytes:Number){
+  private function bytes_to_time(bytes:Number):Number{
     return bytes / ns.bytesTotal * metadata.duration;
   }
 }
