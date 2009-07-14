@@ -89,6 +89,11 @@ Whenever the user tries to watch a segment that is not loaded yet, the player wi
 
 Enable the fullscreen button. You also need to set the allowFullScreen variable with
 
+#### stealth_mode
+
+    so.addVariable('stealth_mode');
+
+When this option is set, the controls are not displayed by default.
 
 ## FLV Streaming
 

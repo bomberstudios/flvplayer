@@ -1,27 +1,25 @@
 import com.bomberstudios.video.Player;
 
 class flvplayer {
-  var _timeline:MovieClip;
+  var _t:MovieClip;
   var _video:com.bomberstudios.video.Player;
 
   function flvplayer(timeline:MovieClip){
     trace("Starting app...");
-    _timeline = timeline;
-    _video = new Player(_timeline);
-    _video.aspect_ratio = _timeline.aspect_ratio;
+    _t = timeline;
+    var options:Object = {
+      aspect_ratio: _t.aspect_ratio,
+      video_path: _t.video_path,
+      watermark: _t.watermark,
+      has_streaming: _t.has_streaming,
+      stealth_mode: _t.stealth_mode,
+      fullscreen_enabled: _t.fullscreen,
+      placeholder_path: _t.placeholder,
+      autoplay: _t.autoplay
+    };
+    _video = new Player(_t, options);
     _video.set_width(Stage.width);
-    _video.video_path = _timeline.video_path;
-    if (_timeline.watermark) {
-      _video.load_watermark(_timeline.watermark);
-    }
-    if (_timeline.has_streaming) {
-      _video.has_streaming = _timeline.has_streaming;
-    }
-    if (_timeline.fullscreen) {
-      _video.fullscreen_enabled = true;
-    }
-    _video.placeholder_path = _timeline.placeholder;
-    if (_timeline.autoplay != undefined) {
+    if (_t.autoplay != undefined) {
       _video.toggle_play();
     }
   }
