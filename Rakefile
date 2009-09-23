@@ -58,7 +58,8 @@ end
 Rake::PackageTask.new(APP, :noversion) do |p|
   p.need_zip = true
   p.name = Time.now.strftime("%Y%m%d") + "-" + APP
-  p.package_files.include("README.mdown",'app.rb',Dir["deploy/*"].reject { |file| file.include? 'flv'})
+  p.package_files.include("README.mdown",'app.rb',Dir["deploy/*"].reject { |file| file.include? '.flv'})
+  p.package_files.exclude(".DS_Store")
 end
 
 
