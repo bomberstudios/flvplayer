@@ -87,7 +87,7 @@ Whenever the user tries to watch a segment that is not loaded yet, the player wi
     so.addVariable('fullscreen');
     so.addParam('allowFullScreen',true);
 
-Enable the fullscreen button. You also need to set the allowFullScreen variable with
+Enable the fullscreen button.
 
 #### stealth_mode
 
