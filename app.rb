@@ -51,17 +51,15 @@ helpers do
     </div>
     <script type="text/javascript">
       var so = new SWFObject("/swf", "mymovie", "#{WIDTH}", "#{HEIGHT}", "8", "#{BGCOLOR}");
-      so.addParam('allowFullScreen',true);
       so.addVariable('aspect_ratio',16/9);
       so.addVariable('placeholder','/placeholder');
-      // so.addVariable('video_path','/video');
-      //so.addVariable('video_path','http://www.uem.es/myfiles/videos/cse/0010.flv');
       so.addVariable('video_path','/0010.flv');
       so.addVariable('watermark','/watermark.png');
+      so.addParam('allowFullScreen',true);
       so.addVariable('fullscreen',true);
       so.addVariable('stealth_mode',true);
-      so.addVariable('autoplay',true);
-      //so.addVariable('has_streaming',true);
+      // so.addVariable('autoplay',true);
+      // so.addVariable('has_streaming',true);
       so.write("flashcontent");
     </script>
     <p>
