@@ -67,6 +67,7 @@ class com.bomberstudios.video.Player {
 
 
   function Player(_mc:MovieClip, init_options:Object){
+    trace("****************************************************************");
     Stage.scaleMode = "noScale";
     Stage.align = "TL";
     mc = _mc.createEmptyMovieClip('v',_mc.getNextHighestDepth());
@@ -208,7 +209,7 @@ class com.bomberstudios.video.Player {
   // Run loop
   private function start_run_loop(){
     run_loop_id = setInterval(Delegate.create(this,on_run_loop),RUN_LOOP_SLEEP);
-    redraw();
+    //redraw();
   }
   private function on_run_loop(){
 
@@ -308,7 +309,7 @@ class com.bomberstudios.video.Player {
   // UI
   public function set fullscreen_enabled(v:Boolean){
     fullscreen_available = v;
-    redraw();
+    //redraw();
   }
   function set_width(w:Number){
     video_mc._width = Math.floor(w);
@@ -322,6 +323,7 @@ class com.bomberstudios.video.Player {
     mc.transport._visible = true;
   }
   private function create_ui(){
+    trace("create_ui");
     // Video display
     mc.attachMovie('VideoDisplay','VideoDisplay',LEVEL_VIDEODISPLAY);
     video_mc = mc.VideoDisplay.vid;
@@ -354,6 +356,7 @@ class com.bomberstudios.video.Player {
     hide_transport();
   }
   private function redraw(){
+    trace("redraw");
     var tentative_video_height:Number = Stage.width / aspect_ratio;
     if(tentative_video_height > Stage.height){
       set_width(Stage.height * aspect_ratio);
@@ -461,7 +464,11 @@ class com.bomberstudios.video.Player {
 
   // Placeholder image
   function load_placeholder(uri:String){
+    if (mc.placeholder) {
+      return;
+    }
     mc.createEmptyMovieClip('placeholder',LEVEL_PLACEHOLDER);
+    mc.placeholder._visible = false;
     mc.placeholder.createEmptyMovieClip('img',100);
     var loader:MovieClipLoader = new MovieClipLoader();
     loader.onLoadInit = Delegate.create(this,show_placeholder);
@@ -477,12 +484,27 @@ class com.bomberstudios.video.Player {
     mc.placeholder.onRelease = Delegate.create(this,toggle_play);
   }
   function center_on_stage(mc:MovieClip){
+    trace("center_on_stage("+mc+")");
+
+    // Reset size
+    mc._xscale = mc._yscale = 100;
+    var resize_ratio:Number = 0;
+    if (mc._width < Stage.width || mc._height < Stage.height) {
+      resize_ratio = Math.max(Stage.width / mc._width, Stage.height / mc._height);
+    }
+    if (resize_ratio) {
+      mc._xscale = mc._yscale = resize_ratio * 100;
+    }
+
     mc._x = Math.floor(Stage.width / 2 - mc._width / 2)
     mc._y = Math.floor(Stage.height / 2 - mc._height / 2)
   }
 
   // Watermark
   function load_watermark(uri:String){
+    if (mc.watermark) {
+      return;
+    }
     mc.createEmptyMovieClip('watermark',LEVEL_WATERMARK);
     mc.watermark.createEmptyMovieClip('img',100);
     var loader:MovieClipLoader = new MovieClipLoader();
