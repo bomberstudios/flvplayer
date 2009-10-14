@@ -338,8 +338,10 @@ class com.bomberstudios.video.Player {
     show_play_button();
 
     // Fullscreen button
-    mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
-    make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
+    if (fullscreen_available) {
+      mc.transport.attachMovie('ico_fullscreen','ico_fullscreen',LEVEL_ICO_FULLSCREEN,{_x:mc.transport._width - 22, _y:BUTTON_MARGIN});
+      make_button(mc.transport.ico_fullscreen,Delegate.create(this,toggle_fullscreen));
+    }
 
     // Sound button
     mc.transport.attachMovie('ico_sound','ico_sound',LEVEL_ICO_SOUND,{_x:mc.transport._width - 44, _y:BUTTON_MARGIN});
