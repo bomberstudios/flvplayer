@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<movie width="<%= WIDTH %>" height="<%= HEIGHT %>" framerate="<%= FPS %>" version="<%= PLAYER %>">
-  <background color="<%= BGCOLOR %>"/>
+<movie width="<%= Fluby.width %>" height="<%= Fluby.height %>" framerate="<%= Fluby.fps %>" version="<%= Fluby.player %>">
+  <background color="<%= Fluby.bgcolor %>"/>
   <frame>
     <library>
 <% Dir["assets/*.png"].each do |file| %>

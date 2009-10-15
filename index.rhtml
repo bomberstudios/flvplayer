@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title><%= APP %></title>
+    <title><%= Fluby.project_name %></title>
     <script type="text/javascript" src="swfobject.js"></script>
   </head>
   <body>
@@ -9,7 +9,7 @@
       This text is replaced by the Flash movie.
     </div>
     <script type="text/javascript">
-      var so = new SWFObject("<%= APP %>.swf", "mymovie", "<%= WIDTH %>", "<%= HEIGHT %>", "<%= PLAYER %>", "<%= BGCOLOR %>");
+      var so = new SWFObject("<%= Fluby.project_name %>.swf", "mymovie", "<%= Fluby.width %>", "<%= Fluby.height %>", "<%= Fluby.player %>", "<%= Fluby.bgcolor %>");
       so.write("flashcontent");
     </script>
   </body>
