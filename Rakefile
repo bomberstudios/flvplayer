@@ -42,7 +42,7 @@ end
 desc "Build a release version of flvplayer (with trace() disabled)"
 task :release do
   system('fluby release')
-  system('fluby pack')
+  system('rake package')
 end
 
-task :default => [:test]
+task :default => [:build]
