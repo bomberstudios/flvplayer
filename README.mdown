@@ -68,7 +68,13 @@ aspect_ratio calculation.
 
     so.addVariable('watermark','logo.png');
 
-String. URL to an image to be displayed at the bottom right of the video (like a TV station logo, for example)
+String. URL to an image to be displayed on top of the video (like a TV station logo, for example).
+
+The position can be specified by using the 'watermarkPosition' variable:
+
+    so.addVariable('watermarkPosition',position);
+
+where 'position' is a string with a value of TL, TR, BL or BR (for Top Left, Top Right, Bottom Left or Bottom Right). If you don't specify anything, the default position is BR (Bottom Right).
 
 
 #### has_streaming
