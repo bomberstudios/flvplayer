@@ -2,6 +2,7 @@
   flvplayer v1.6
 */
 import com.bomberstudios.utils.Delegate;
+import com.bomberstudios.menu.BSContextMenu;
 import com.bomberstudios.fx.DropShadow;
 import com.bomberstudios.text.Styles;
 import flash.geom.Rectangle; // needed for fullscreen hardware scaling
@@ -12,6 +13,7 @@ class com.bomberstudios.video.Player {
   var video_mc:MovieClip;
   var ns:NetStream;
   var nc:NetConnection;
+  var context_menu:BSContextMenu;
 
   // Video status
   var is_playing:Boolean = false;
@@ -71,6 +73,7 @@ class com.bomberstudios.video.Player {
     Stage.scaleMode = "noScale";
     Stage.align = "TL";
     mc = _mc.createEmptyMovieClip('v',_mc.getNextHighestDepth());
+    context_menu = new BSContextMenu(_mc);
     // Parse options
     for(var option:String in init_options){
       switch option {
