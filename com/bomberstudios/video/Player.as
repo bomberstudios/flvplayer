@@ -14,6 +14,7 @@ class com.bomberstudios.video.Player {
   var ns:NetStream;
   var nc:NetConnection;
   var context_menu:BSContextMenu;
+  var watermark_position:String = "BR";
 
   // Video status
   var is_playing:Boolean = false;
@@ -135,6 +136,10 @@ class com.bomberstudios.video.Player {
   }
   public function get stealth_mode():Boolean{
     return $stealth_mode;
+  }
+  public function set watermarkPosition(p:String){
+    watermark_position = p;
+    position_watermark();
   }
 
   // Transport
@@ -520,8 +525,33 @@ class com.bomberstudios.video.Player {
     loader.loadClip(uri,mc.watermark.img);
   }
   function position_watermark(){
-    mc.watermark._x = Stage.width - mc.watermark._width - (BUTTON_MARGIN * 3);
-    mc.watermark._y = Stage.height - mc.watermark._height - (BUTTON_MARGIN * 3);
+    // Positions:
+    // BR = Bottom Right
+    // BL = Bottom Left
+    // TR = Top Right
+    // TL = Top Left
+    var x;
+    var y;
+    switch ( watermark_position ) {
+      case "BR":
+        x = Stage.width - mc.watermark._width - (BUTTON_MARGIN * 3);
+        y = Stage.height - mc.watermark._height - (BUTTON_MARGIN * 3);
+        break;
+      case "TR":
+        x = Stage.width - mc.watermark._width - (BUTTON_MARGIN * 3);
+        y = (BUTTON_MARGIN * 3);
+        break;
+      case "BL":
+        x = (BUTTON_MARGIN * 3);
+        y = Stage.height - mc.watermark._height - (BUTTON_MARGIN * 3);
+        break;
+      case "TL":
+        x = (BUTTON_MARGIN * 3);
+        y = (BUTTON_MARGIN * 3);
+        break;
+    }
+    mc.watermark._x = x;
+    mc.watermark._y = y;
   }
 
   // Video Markers

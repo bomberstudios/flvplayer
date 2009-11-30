@@ -15,7 +15,8 @@ class flvplayer {
       stealth_mode: _t.stealth_mode,
       fullscreen_enabled: _t.fullscreen,
       placeholder_path: _t.placeholder,
-      autoplay: _t.autoplay
+      autoplay: _t.autoplay,
+      watermarkPosition: _t.watermarkPosition
     };
     _video = new Player(_t, options);
     _video.set_width(Stage.width);

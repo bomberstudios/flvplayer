@@ -55,9 +55,10 @@ helpers do
       so.addVariable('placeholder','/placeholder');
       so.addVariable('video_path','/0010.flv');
       so.addVariable('watermark','/watermark.png');
+      so.addVariable('watermarkPosition','TR');
       so.addParam('allowFullScreen',true);
       so.addVariable('fullscreen',true);
-      so.addVariable('stealth_mode',true);
+      // so.addVariable('stealth_mode',false);
       // so.addVariable('autoplay',true);
       // so.addVariable('has_streaming',true);
       so.write("flashcontent");
